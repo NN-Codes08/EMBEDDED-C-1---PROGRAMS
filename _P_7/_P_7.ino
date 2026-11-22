@@ -1,23 +1,17 @@
-#include <LiquidCrystal.h>
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int main(void)
+{
+    int i;
 
-void setup() {
-  lcd.begin(16, 2);
-}
+    lcd_init();
 
-void loop() {
-  for (int i = 9; i >= 0; i--) {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Countdown:");
-    lcd.setCursor(0, 1);
-    lcd.print(i);
-    delay(1000);
-  }
+    for(i = 9; i >= 0; i--)
+    {
+        lcd_cmd(0x80);
+        lcd_data(i + '0');
 
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Time Up!");
-  delay(2000);
+        _delay_ms(1000);
+    }
+
+    while(1);
 }
