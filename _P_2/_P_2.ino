@@ -1,17 +1,24 @@
-const int BUTTON_PIN = 7;
-const int LED_PIN = 13;
 
-void setup() {
-  pinMode(BUTTON_PIN, INPUT_PULLUP); // LOW when pressed
-  pinMode(LED_PIN, OUTPUT);
-}
+#define F_CPU 16000000UL
+#include <avr/io.h>
+#include <util/delay.h>
 
-void loop() {
-  int buttonState = digitalRead(BUTTON_PIN);
+int main(void)
+{
+    DDRD |= 0x3C;
 
-  if (buttonState == LOW) {
-    digitalWrite(LED_PIN, HIGH); // LED ON while pressed
-  } else {
-    digitalWrite(LED_PIN, LOW);  // LED OFF when released
-  }
+    while(1)
+    {
+        PORTD = (1 << PD2);
+        _delay_ms(500);
+
+        PORTD = (1 << PD3);
+        _delay_ms(500);
+
+        PORTD = (1 << PD4);
+        _delay_ms(500);
+
+        PORTD = (1 << PD5);
+        _delay_ms(500);
+    }
 }
