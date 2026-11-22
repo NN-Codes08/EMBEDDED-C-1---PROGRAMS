@@ -1,29 +1,21 @@
-const int RED_LED = 8;
-const int YELLOW_LED = 9;
-const int GREEN_LED = 10;
 
-void setup() {
-  pinMode(RED_LED, OUTPUT);
-  pinMode(YELLOW_LED, OUTPUT);
-  pinMode(GREEN_LED, OUTPUT);
-}
+#define F_CPU 16000000UL
+#include <avr/io.h>
+#include <util/delay.h>
 
-void loop() {
-  // Red ON
-  digitalWrite(RED_LED, HIGH);
-  digitalWrite(YELLOW_LED, LOW);
-  digitalWrite(GREEN_LED, LOW);
-  delay(3000);
+int main(void)
+{
+    DDRD |= 0x1C;
 
-  // Yellow ON
-  digitalWrite(RED_LED, LOW);
-  digitalWrite(YELLOW_LED, HIGH);
-  digitalWrite(GREEN_LED, LOW);
-  delay(1000);
+    while(1)
+    {
+        PORTD = (1<<PD2);
+        _delay_ms(3000);
 
-  // Green ON
-  digitalWrite(RED_LED, LOW);
-  digitalWrite(YELLOW_LED, LOW);
-  digitalWrite(GREEN_LED, HIGH);
-  delay(3000);
+        PORTD = (1<<PD4);
+        _delay_ms(3000);
+
+        PORTD = (1<<PD3);
+        _delay_ms(1000);
+    }
 }
