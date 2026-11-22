@@ -1,32 +1,35 @@
-#include <LiquidCrystal.h>
+#
+int main(void)
+{
+    unsigned int count = 0;
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
-const int BUTTON_PIN = 7;
+    DDRB &= ~(1 << PB3);
+    PORTB |= (1 << PB3);
 
-int pressCount = 0;
-int lastButtonState = HIGH;
+    lcd_init();
 
-void setup() {
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  lcd.begin(16, 2);
-  lcd.setCursor(0, 0);
-  lcd.print("Presses: 0");
-}
+    while(1)
+    {
+        if(!(PINB & (1 << PB3)))
+        {
+            _delay_ms(50);
 
-void loop() {
-  int currentButtonState = digitalRead(BUTTON_PIN);
+            if(!(PINB & (1 << PB3)))
+            {
+                count++;
 
-  // Detect transition from unpressed (HIGH) to pressed (LOW)
-  if (lastButtonState == HIGH && currentButtonState == LOW) {
-    delay(50); // Simple debounce delay
-    if (digitalRead(BUTTON_PIN) == LOW) {
-      pressCount++;
-      lcd.setCursor(0, 0);
-      lcd.print("Presses: ");
-      lcd.print(pressCount);
-      lcd.print("   ");
+                lcd_cmd(0x80);
+                lcd_string("BUTTON COUNT:");
+
+                lcd_cmd(0xC0);
+                lcd_string("                ");
+                lcd_cmd(0xC0);
+                lcd_number(count);
+
+                while(!(PINB & (1 << PB3)));
+
+                _delay_ms(50);
+            }
+        }
     }
-  }
-
-  lastButtonState = currentButtonState;
 }
