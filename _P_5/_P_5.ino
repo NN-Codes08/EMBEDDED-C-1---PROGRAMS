@@ -1,18 +1,17 @@
-#include <LiquidCrystal.h>
 
-// LiquidCrystal(rs, enable, d4, d5, d6, d7)
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int main(void)
+{
+    int i;
 
-void setup() {
-  lcd.begin(16, 2);
-}
+    lcd_init();
 
-void loop() {
-  for (int num = 0; num <= 9; num++) {
-    lcd.clear();
-    lcd.setCursor(0, 0); // Column 0, Row 0
-    lcd.print("Count: ");
-    lcd.print(num);
-    delay(700);
-  }
+    for(i = 0; i <= 9; i++)
+    {
+        lcd_cmd(0x80);
+        lcd_data(i + '0');
+
+        _delay_ms(1000);
+    }
+
+    while(1);
 }
