@@ -1,12 +1,12 @@
-const int LED_PIN = 13;
+#include <avr/io.h>
+#include <util/delay.h>
 
-void setup() {
-  pinMode(LED_PIN, OUTPUT);
-}
+int main(void)
+{
+    // Configure pins using DDR
 
-void loop() {
-  digitalWrite(LED_PIN, HIGH); // Turn LED ON
-  delay(500);                  // Wait 500 ms
-  digitalWrite(LED_PIN, LOW);  // Turn LED OFF
-  delay(500);                  // Wait 500 ms
+    while(1)
+    {
+        // Main program
+    }
 }
