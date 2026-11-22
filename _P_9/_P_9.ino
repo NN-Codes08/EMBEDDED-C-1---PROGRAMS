@@ -1,4 +1,4 @@
-#
+
 int main(void)
 {
     unsigned int count = 0;
