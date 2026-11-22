@@ -1,22 +1,24 @@
-#include <LiquidCrystal.h>
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
-const int BUTTON_PIN = 7;
+int main(void)
+{
+    DDRB &= ~(1 << PB3);
+    PORTB |= (1 << PB3);
 
-void setup() {
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  lcd.begin(16, 2);
-  lcd.setCursor(0, 0);
-  lcd.print("Waiting...");
-}
+    lcd_init();
 
-void loop() {
-  if (digitalRead(BUTTON_PIN) == LOW) {
-    lcd.setCursor(0, 0);
-    lcd.print("SWITCH PRESSED  "); // Extra spaces clear leftover text
-  } else {
-    lcd.setCursor(0, 0);
-    lcd.print("Waiting...      ");
-  }
-  delay(100);
+    while(1)
+    {
+        lcd_cmd(0x80);
+
+        if(!(PINB & (1 << PB3)))
+        {
+            lcd_string("SWITCH PRESSED");
+        }
+        else
+        {
+            lcd_string("                ");
+        }
+
+        _delay_ms(100);
+    }
 }
