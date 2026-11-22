@@ -1,16 +1,23 @@
-const int leds[4] = {8, 9, 10, 11};
 
-void setup() {
-  for (int i = 0; i < 4; i++) {
-    pinMode(leds[i], OUTPUT);
-    digitalWrite(leds[i], LOW);
-  }
-}
+#define F_CPU 16000000UL
+#include <avr/io.h>
 
-void loop() {
-  for (int i = 0; i < 4; i++) {
-    digitalWrite(leds[i], HIGH); // Turn current LED ON
-    delay(200);
-    digitalWrite(leds[i], LOW);  // Turn current LED OFF
-  }
+int main(void)
+{
+    DDRD |= (1 << PD2);
+    DDRB &= ~(1 << PB0);
+
+    PORTB |= (1 << PB0);
+
+    while(1)
+    {
+        if(!(PINB & (1 << PB0)))
+        {
+            PORTD |= (1 << PD2);
+        }
+        else
+        {
+            PORTD &= ~(1 << PD2);
+        }
+    }
 }
