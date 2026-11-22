@@ -1,17 +1,13 @@
-#include <LiquidCrystal.h>
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+int main(void)
+{
+    lcd_init();
 
-void setup() {
-  lcd.begin(16, 2);
+    lcd_cmd(0x80);
+    lcd_string("YOUR NAME");
 
-  lcd.setCursor(0, 0); // First line
-  lcd.print("Name: YOUR NAME");
+    lcd_cmd(0xC0);
+    lcd_string("YOUR USN");
 
-  lcd.setCursor(0, 1); // Second line
-  lcd.print("USN: 1XX23CS001");
-}
-
-void loop() {
-  // Static display; nothing needs to repeat
+    while(1);
 }
