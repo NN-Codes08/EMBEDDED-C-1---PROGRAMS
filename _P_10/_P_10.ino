@@ -1,42 +1,39 @@
-#include <LiquidCrystal.h>
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
-const int BUTTON_PIN = 7;
-const int LED_PIN = 13;
+int main(void)
+{
+    DDRB |= (1 << PB4);
+    DDRB &= ~(1 << PB3);
 
-bool ledState = false;
-int lastButtonState = HIGH;
+    PORTB |= (1 << PB3);
+    PORTB &= ~(1 << PB4);
 
-void updateDisplay() {
-  lcd.setCursor(0, 0);
-  lcd.print("LED Control");
-  lcd.setCursor(0, 1);
-  if (ledState) {
-    lcd.print("Status: ON   ");
-  } else {
-    lcd.print("Status: OFF  ");
-  }
-}
+    lcd_init();
 
-void setup() {
-  pinMode(BUTTON_PIN, INPUT_PULLUP);
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, LOW);
-  lcd.begin(16, 2);
-  updateDisplay();
-}
+    while(1)
+    {
+        if(!(PINB & (1 << PB3)))
+        {
+            _delay_ms(50);
 
-void loop() {
-  int currentButtonState = digitalRead(BUTTON_PIN);
+            if(!(PINB & (1 << PB3)))
+            {
+                PORTB ^= (1 << PB4);
 
-  if (lastButtonState == HIGH && currentButtonState == LOW) {
-    delay(50); // Debounce
-    if (digitalRead(BUTTON_PIN) == LOW) {
-      ledState = !ledState; // Toggle state
-      digitalWrite(LED_PIN, ledState ? HIGH : LOW);
-      updateDisplay();
+                lcd_cmd(0x80);
+
+                if(PORTB & (1 << PB4))
+                {
+                    lcd_string("LED IS ON");
+                }
+                else
+                {
+                    lcd_string("LED IS OFF");
+                }
+
+                while(!(PINB & (1 << PB3)));
+
+                _delay_ms(50);
+            }
+        }
     }
-  }
-
-  lastButtonState = currentButtonState;
 }
